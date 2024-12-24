@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+<!-- Displays all lists for active user -->
+{% block content %}
+<div class="row">
+    <h1>This is the home.html block content</h1>
+    {% for list in object_list %}
+    <div class="col-3">
+        <div class="card">
+            <a href="lists/{{ list.id }}">
+                <div class="card-body">
+                    <h4 class="card-title">{{list.name}}</h4>
+                    <h5 class="card-content">{{list.description}}</h5>
+                </div>
+            </a>    
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}

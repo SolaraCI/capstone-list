@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+<!-- Displays selected list -->
+{% block content %}
+
+<h1>{{ list.name }}</h1>
+
+<form
+  method="POST"
+  class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2"
+>
+  {% csrf_token %}
+  <div class="col-12">
+    <div class="form-outline">
+      <input
+        type="text"
+        id="form1"
+        class="form-control"
+        name="task"
+        placeholder="Enter a task here"
+        parent_list="{{list}}"
+      />
+    </div>
+  </div>
+
+  <div class="wrapper">
+    {% if messages %} {% for message in messages %}
+    <h2 style="color: #b22222">{{message}}</h2>
+    {% endfor %} {% endif %}
+  </div>
+
+  <table class="table mb-4">
+    <thead>
+      <tr>
+        <th scope="col">Task</th>
+        <th scope="col"></th>
+        <th scope="col">ID</th>
+        <th scope="col">Status</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in item_sig_list %}
+      <tr>
+        <td>{{ item.name }}</td>
+        <td><button type="submit" class="btn ms-1">Edit</button></td>
+        <td>{{ item.id }}</td>
+        {% if item.complete %}
+        <td>Complete</td>
+        {% else %}
+        <td>Incomplete</td>
+        {% endif %}
+        <td>
+          <a
+            href="{% url 'delete_item' current_list_id item.name item.id %}"
+            class="btn btn-danger"
+            >Delete</a
+          >
+          <button type="submit" class="btn btn-success ms-1">Finished</button>
+        </td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td>
+          <a href="{% url 'add_item' current_list_id %}"><button type="submit" class="btn btn-success ms-1">+</button></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- <div class="row">
+    <h1>{{ list.name }}</h1>
+    {% for item in item_names %}
+    <p>{{ item }}</p>
+    {% endfor %}
+  </div> -->
+</form>
+{% endblock content %}
