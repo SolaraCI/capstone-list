@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+<!-- Displays selected list -->
+{% block content %}
+
+<h1>{{ list.name }}</h1>
+
+<form
+  method="POST"
+  class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2"
+>
+  {% csrf_token %}
+  <div class="col-12">
+    <div class="form-outline">
+      <input
+        type="text"
+        id="form1"
+        class="form-control"
+        name="task"
+        placeholder="Enter a task here"
+        parent_list="{{list}}"
+      />
+    </div>
+  </div>
+
+  <div class="wrapper">
+    {% if messages %}
+        {% for message in messages %}
+          <h2 style="color: #b22222;">{{message}}</h2>
+        {% endfor %}
+      {% endif %}
+  </div>
+  
+  <table class="table mb-4">
+    <thead>
+      <tr>
+        <th scope="col">Task</th>
+        <th scope="col">Status</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in item_names %}
+        <tr>
+          <td>{{ item }}</td>
+          {% if item.complete %}
+          <td>Complete</td>
+          {% else %}
+          <td>Incomplete</td>
+          {% endif %}
+
+          <td>
+            <a href=""><button type="submit" class="btn btn-danger">Delete</button></a>
+            <button type="submit" class="btn btn-success ms-1">Finished</button>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- <div class="row">
+    <h1>{{ list.name }}</h1>
+    {% for item in item_names %}
+    <p>{{ item }}</p>
+    {% endfor %}
+  </div> -->
+</form>
+{% endblock content %}
