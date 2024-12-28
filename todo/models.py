@@ -12,20 +12,21 @@ class List(models.Model):
     creator = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="owned_lists"
     )
-    status = models.IntegerField(choices=STATUS, default=0)
 
     def __str__(self):
         return self.title
 
 
 class Item(models.Model):
-    name = models.CharField(max_length=500, default='new')
+    item_name = models.CharField(max_length=500, default='new')
     parent_list = models.ForeignKey(
         List, on_delete=models.CASCADE, related_name="items"
     )
-    complete = models.BooleanField(default=False)
-    has_sub_items = models.BooleanField(default=False)
+    status = models.IntegerField(choices=STATUS, default=0)
+    created_on = models.DateTimeField(auto_now_add=True)
     
-
+    class Meta:
+        ordering = ["-created_on"]
+    
     def __str__(self):
-        return self.name
+        return self.item_name
