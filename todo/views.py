@@ -10,4 +10,4 @@ from .models import List, Item
 
 class Overview(generic.ListView):
     queryset = List.objects.all()
-    template_name = "todo/home.html"
+    template_name = "todo/index.html"
