@@ -31,8 +31,8 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'home' %}"><span class="brand">c<span class="red-o">o</span>de<span
-                        class="thin">|star</span></span></a>
+            <a class="navbar-brand" href="{% url 'home' %}"><span class="brand">to<span class="red-o">do</span><span
+                        class="thin">: [list]</span></span></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                 aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -43,7 +43,18 @@
                         <a class="nav-link {% if request.path == home_url %}active{% endif %}" aria-current="page"
                             href="#">Home</a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page"
+                            href="#">Create List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " aria-current="page"
+                            href="#">Sign In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " aria-current="page"
+                            href="#">Register</a>
+                    </li>
                 </ul>
                 <span class="navbar-text text-muted">
                     adventures of a software developer
@@ -62,7 +73,7 @@
 
     <!-- Footer -->
     <footer class="footer mt-auto py-3 dark-bg">
-        <p class="m-0 text-center text-white">Made by Code Instituters</p>
+        <p class="m-0 text-center text-white">© Sol Coton</p>
         <p class="m-0 text-center text-white">Follow us: <i class="fab fa-facebook-square ms-3"></i>
             <i class="fab fa-twitter-square ms-3"></i>
             <i class="fab fa-instagram-square ms-3"></i>
