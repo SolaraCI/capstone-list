@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.urls import reverse
 STATUS = ((0, "Not Started"), (1, "In Progress"), (2, "Complete"))
 
 # Create your models here.
@@ -12,6 +12,9 @@ class List(models.Model):
     creator = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="owned_lists"
     )
+    
+    def get_absolute_url(self):
+        return reverse("list_view", kwargs={"list_id": self.pk})
 
     def __str__(self):
         return self.title
