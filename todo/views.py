@@ -4,14 +4,19 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.views import generic
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from .forms import ListForm
 from .models import List, Item
 
 
+# Displays all lists belonging to the authenticated user
 class Overview(generic.ListView):
     queryset = List.objects.all()
     template_name = "todo/index.html"
     
+
     
 class SingleListView(generic.ListView):
     template_name = '/workspace/capstone-list/todo/templates/todo/view_list.html'
@@ -24,3 +29,36 @@ class SingleListView(generic.ListView):
         context = super().get_context_data(**kwargs)
         context['parent_list'] = self.parent_list
         return context
+    
+
+# Views involved in doing stuff with a list
+ 
+# class ListFormView(generic.edit.FormView):
+#     template_name = "todo/create_list.html"
+#     form_class = ListForm
+#     success_url = '/'
+    
+#     def form_valid(self, form):
+#         form.create_list(self.request.user)
+#         return super().form_valid(form)
+    
+    
+class ListCreateView(CreateView):
+    template_name = "todo/create_list.html"
+    model = List
+    form_class = ListForm
+    success_url = '/'
+
+    def form_valid(self, form):
+        form.instance.creator = self.request.user
+        return super().form_valid(form)
+    
+    
+class ListUpdateView(UpdateView):
+    model = List
+    fields = ['title', 'description']
+    
+    
+class ListDeleteView(DeleteView):
+    model = List
+    success_url = reverse_lazy('home')
