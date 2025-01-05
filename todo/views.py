@@ -15,50 +15,49 @@ from .models import List, Item
 class Overview(generic.ListView):
     queryset = List.objects.all()
     template_name = "todo/index.html"
-    
 
-    
+
 class SingleListView(generic.ListView):
-    template_name = '/workspace/capstone-list/todo/templates/todo/view_list.html'
-    
+    template_name = "/workspace/capstone-list/todo/templates/todo/view_list.html"
+
     def get_queryset(self):
-        self.parent_list = get_object_or_404(List, id=self.kwargs.get('list_id'))
+        self.parent_list = get_object_or_404(List, id=self.kwargs.get("list_id"))
         return Item.objects.filter(parent_list=self.parent_list)
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['parent_list'] = self.parent_list
+        context["parent_list"] = self.parent_list
         return context
-    
+
 
 # Views involved in doing stuff with a list
- 
+
 # class ListFormView(generic.edit.FormView):
 #     template_name = "todo/create_list.html"
 #     form_class = ListForm
 #     success_url = '/'
-    
+
 #     def form_valid(self, form):
 #         form.create_list(self.request.user)
 #         return super().form_valid(form)
-    
-    
+
+
 class ListCreateView(CreateView):
     template_name = "todo/create_list.html"
     model = List
     form_class = ListForm
-    success_url = '/'
+    success_url = "/"
 
     def form_valid(self, form):
         form.instance.creator = self.request.user
         return super().form_valid(form)
-    
-    
+
+
 class ListUpdateView(UpdateView):
     model = List
-    fields = ['title', 'description']
-    
-    
+    fields = ["title", "description"]
+
+
 class ListDeleteView(DeleteView):
     model = List
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy("home")
