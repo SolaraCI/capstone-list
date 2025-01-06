@@ -1,4 +1,3 @@
-from django import forms
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -7,7 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from .forms import ListForm
+from .forms import ListForm, ItemForm
 from .models import List, Item
 
 
@@ -17,7 +16,7 @@ class Overview(generic.ListView):
     
     def get_queryset(self):
         if self.request.user.is_authenticated:
-            return List.objects.filter(creator=self.user.username)
+            return List.objects.filter(creator=self.request.user)
         else:
             return 
 
@@ -56,3 +55,14 @@ class ListUpdateView(UpdateView):
 class ListDeleteView(DeleteView):
     model = List
     success_url = reverse_lazy("home")
+
+
+# Views involved in doing stuff with items
+
+class ItemCreateView(CreateView):
+    model = Item
+    form_class = ItemForm
+    
+    def form_valid(self, form):
+        form.instance.creator = self.request.user
+        return super().form_valid(form)
