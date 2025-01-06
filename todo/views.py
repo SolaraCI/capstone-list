@@ -1,12 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from .forms import ListForm, ItemForm
+from .forms import ListForm, ItemForm, ItemFormSet
 from .models import List, Item
 
 
@@ -61,8 +62,29 @@ class ListDeleteView(DeleteView):
 
 class ItemCreateView(CreateView):
     model = Item
+    template_name = '/workspace/capstone-list/todo/templates/todo/create_item.html'
     form_class = ItemForm
+    success_url = None
+    
+    def get_context_data(self, **kwargs):
+        data = super(ItemCreateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data['item_names'] = ItemFormSet(self.request.POST)
+        else:
+            data["item_names"] = ItemFormSet()
+        return data
+    
     
     def form_valid(self, form):
-        form.instance.creator = self.request.user
-        return super().form_valid(form)
+        context = self.get_context_data()
+        item_names = context['item_names']
+        with transaction.atomic():
+            self.object = form.save()
+            if item_names.is_valid():
+                item_names.instance = self.object
+                item_names.save()
+        return super(ItemCreateView, self).form_valid(form)
+        
+    
+    def get_success_url(self):
+        return reverse_lazy('list_view', kwargs={'parent_list': self.object.parent_list})
