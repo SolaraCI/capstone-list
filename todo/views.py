@@ -13,8 +13,13 @@ from .models import List, Item
 
 # Displays all lists belonging to the authenticated user
 class Overview(generic.ListView):
-    queryset = List.objects.all()
     template_name = "todo/index.html"
+    
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return List.objects.filter(creator=self.user.username)
+        else:
+            return 
 
 
 class SingleListView(generic.ListView):
@@ -31,16 +36,6 @@ class SingleListView(generic.ListView):
 
 
 # Views involved in doing stuff with a list
-
-# class ListFormView(generic.edit.FormView):
-#     template_name = "todo/create_list.html"
-#     form_class = ListForm
-#     success_url = '/'
-
-#     def form_valid(self, form):
-#         form.create_list(self.request.user)
-#         return super().form_valid(form)
-
 
 class ListCreateView(CreateView):
     template_name = "todo/create_list.html"
