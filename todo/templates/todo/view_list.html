@@ -1,5 +1,5 @@
-
-{% extends "base.html" %} {% load static %} {% block content %}
+{% extends "base.html" %} 
+{% block content %}
 
 <h1>{{ parent_list.title }}</h1>
 
@@ -9,23 +9,19 @@
     <!-- Blog Entries Column -->
     <div class="col-12 mt-3 left">
       <div class="row">
-        <div class="item-container" id="item-container">
-          {% for item in item_list %}
-          <div class="col-md-4">
-            <div class="card mb-4">
-              <div class="card-body">
-                <a href="#" class="post-link">
-                  <h2 class="card-title">{{ item.item_name }}</h2>
-                </a>
-              </div>
+        {% for item in item_list %}
+        <div class="col-md-4">
+          <div class="card mb-4">
+            <div class="card-body">
+              <a href="#" class="post-link">
+                <h2 class="card-title">{{ item.item_name }}</h2>
+              </a>
             </div>
           </div>
-          <div class="row">{% endfor %}</div>
         </div>
+        {% if forloop.counter|divisibleby:1 %}
       </div>
-      <div id="new-item-input">
-        <div class="row" ><button type="button" id="create-item-button">Add Item</button></div>
-      </div>
+      <div class="row">{% endif %} {% endfor %}</div>
     </div>
   </div>
   {% if is_paginated %}

@@ -22,7 +22,7 @@ class List(models.Model):
 
 
 class Item(models.Model):
-    item_name = models.CharField(max_length=500, blank=True)
+    item_name = models.CharField(max_length=500, default="new")
     parent_list = models.ForeignKey(
         List, on_delete=models.CASCADE, related_name="items"
     )
