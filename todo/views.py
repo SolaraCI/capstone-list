@@ -88,12 +88,12 @@ class ItemCreateView(CreateView):
     
     def form_valid(self, form):
         context = self.get_context_data()
-        item_names = context['item_names']
+        item_name = context['item_name']
         with transaction.atomic():
             self.object = form.save()
-            if item_names.is_valid():
-                item_names.instance = self.object
-                item_names.save()
+            if item_name.is_valid():
+                item_name.instance = self.object
+                item_name.save()
         return super(ItemCreateView, self).form_valid(form)
         
     
