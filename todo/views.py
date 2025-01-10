@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.db import transaction
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
@@ -33,7 +33,19 @@ class SingleListView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["parent_list"] = self.parent_list
+        context["item_form"] = ItemForm()
         return context
+    
+    def post(self, request, *args, **kwargs):
+        self.parent_list = get_object_or_404(List, id=self.kwargs.get("list_id"))
+        form = ItemForm(request.POST)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.parent_list = self.parent_list
+            item.save()
+            return HttpResponseRedirect(reverse_lazy("list_view", kwargs={"list_id": self.parent_list.id}))
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
 
 
 # Views involved in doing stuff with a list
@@ -80,9 +92,9 @@ class ItemCreateView(CreateView):
     def get_context_data(self, **kwargs):
         data = super(ItemCreateView, self).get_context_data(**kwargs)
         if self.request.POST:
-            data['item_names'] = ItemFormSet(self.request.POST)
+            data['item_name'] = ItemFormSet(self.request.POST)
         else:
-            data["item_names"] = ItemFormSet()
+            data["item_name"] = ItemFormSet()
         return data
     
     
