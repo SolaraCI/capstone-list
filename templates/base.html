@@ -3,7 +3,8 @@
 <!DOCTYPE html>
 <html class="h-100" lang="en">
   <head>
-    <title>CodeStar Blog</title>
+    <title>todo:[list]</title>
+    <link rel="shortcut icon" type="img/png" href="{% static 'images/favicon.png' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Google Fonts CSS -->
@@ -62,7 +63,7 @@
               <a
                 class="nav-link {% if request.path == home_url %}active{% endif %}"
                 aria-current="page"
-                href="#"
+                href="/"
                 >Home</a
               >
             </li>
@@ -131,5 +132,6 @@
       integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
       crossorigin="anonymous"
     ></script>
+    <script src="{% static 'js/script.js' %}"></script>
   </body>
 </html>

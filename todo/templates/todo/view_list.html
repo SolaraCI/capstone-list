@@ -1,27 +1,47 @@
-{% extends "base.html" %} 
+{% extends "base.html" %} {% load static %} {% load crispy_forms_tags %} 
 {% block content %}
 
 <h1>{{ parent_list.title }}</h1>
 
-<!-- index.html content starts here -->
-<div class="container-fluid">
+
+<div class="container" id="item-container">
   <div class="row">
-    <!-- Blog Entries Column -->
-    <div class="col-12 mt-3 left">
-      <div class="row">
-        {% for item in item_list %}
-        <div class="col-md-4">
-          <div class="card mb-4">
-            <div class="card-body">
-              <a href="#" class="post-link">
-                <h2 class="card-title">{{ item.item_name }}</h2>
-              </a>
-            </div>
+    <div class="col-md-6"><h2 class="card-title">Item Name</h2></div>
+    <div class="col-md-3"><h2 class="card-title">Status</h2></div>
+    <div class="col-md-3"><h2 class="card-title">Edit/Delete</h2></div>
+  </div>
+  {% for item in item_list %}
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="card-title">{{ item.item_name }}</h3>
+    </div>
+    <div class="col-md-3"></div>
+    <div class="col-md-3"></div>
+  </div>
+  {% endfor %}
+      <div id="new-item-input">
+        <!-- Creating New Items -->
+        <div class="col-md-4 card mb-4 mt-3">
+          <div class="card-body">
+            {% if user.is_authenticated %}
+            <h3>Add an item</h3>
+            <form id="itemForm" method="post" style="margin-top: 1.3em">
+              {{ item_form | crispy }} {% csrf_token %}
+              <button
+                id="submitButton"
+                type="submit"
+                class="btn btn-signup btn-lg"
+              >
+                Submit
+              </button>
+            </form>
+            {% else %}
+            <p>Log in to leave a comment</p>
+            {% endif %}
           </div>
         </div>
-        {% if forloop.counter|divisibleby:1 %}
+        <!-- <div class="row" ><button type="button" id="create-item-button">Add Item</button></div> -->
       </div>
-      <div class="row">{% endif %} {% endfor %}</div>
     </div>
   </div>
   {% if is_paginated %}
