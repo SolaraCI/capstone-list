@@ -13,51 +13,43 @@
   {% for item in item_list %}
   <div class="row">
     <div class="col-md-6">
-      <h3 class="card-title">{{ item.item_name }}</h3>
+      <h3 class="card-title item-name">{{ item.item_name }} </h3>
     </div>
-    <div class="col-md-3"></div>
-    <div class="col-md-3"></div>
+    <div class="col-md-3">
+      <button type="button">Not Started</button>
+      <button type="button">In Progress</button>
+      <button type="button">Complete</button>
+    </div>
+    <div class="col-md-3">
+      <form class="edit_delete_form" method="" action="">
+        <button type="button" class="btn btn-info mt-2" id="edit_item_{{ item.pk }}">Edit</button>
+        <button type="button" class="btn btn-danger mt-2" id="delete_item_{{ item.pk }}">Delete</button>
+      </form>
+    </div>
   </div>
   {% endfor %}
-      <div id="new-item-input">
-        <!-- Creating New Items -->
-        <div class="col-md-4 card mb-4 mt-3">
-          <div class="card-body">
-            {% if user.is_authenticated %}
-            <h3>Add an item</h3>
-            <form id="itemForm" method="post" style="margin-top: 1.3em">
-              {{ item_form | crispy }} {% csrf_token %}
-              <button
-                id="submitButton"
-                type="submit"
-                class="btn btn-signup btn-lg"
-              >
-                Submit
-              </button>
-            </form>
-            {% else %}
-            <p>Log in to leave a comment</p>
-            {% endif %}
-          </div>
-        </div>
-        <!-- <div class="row" ><button type="button" id="create-item-button">Add Item</button></div> -->
-      </div>
+  </div>
+<div id="new-item-input">
+  <!-- Creating New Items -->
+  <div class="col-md-4 card mb-4 mt-3">
+    <div class="card-body">
+      {% if user.is_authenticated %}
+      <h3>Add an item</h3>
+      <form id="itemForm" data-list-id="{{ parent_list.id }}" method="post" style="margin-top: 1.3em">
+        {{ item_form | crispy }} {% csrf_token %}
+        <button
+          id="submitButton"
+          type="submit"
+          class="btn btn-signup btn-lg"
+        >
+          Submit
+        </button>
+      </form>
+      {% endif %}
     </div>
   </div>
-  {% if is_paginated %}
-  <nav aria-label="Page navigation">
-    <ul class="pagination justify-content-center">
-      {% if page_obj.has_next %}
-      <li>
-        <a href="?page={{ page_obj.next_page_number }}" class="page-link">
-          NEXT &raquo;</a
-        >
-      </li>
-      {% endif %}
-    </ul>
-  </nav>
-  {% endif %}
+  <!-- <div class="row" ><button type="button" id="create-item-button">Add Item</button></div> -->
 </div>
-
+ 
 <!-- index.html content ends here -->
 {% endblock %}

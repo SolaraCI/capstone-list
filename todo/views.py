@@ -3,12 +3,15 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from .forms import ListForm, ItemForm, ItemFormSet
 from .models import List, Item
+import json
 
 
 # Displays all lists belonging to the authenticated user
@@ -34,6 +37,7 @@ class SingleListView(generic.ListView):
         context = super().get_context_data(**kwargs)
         context["parent_list"] = self.parent_list
         context["item_form"] = ItemForm()
+        context["item_id"] = get_object_or_404(Item, id=self.kwargs.get("item_id")) if self.kwargs.get("item_id") else None
         return context
     
     def post(self, request, *args, **kwargs):
@@ -43,22 +47,14 @@ class SingleListView(generic.ListView):
             item = form.save(commit=False)
             item.parent_list = self.parent_list
             item.save()
-            return HttpResponseRedirect(reverse_lazy("list_view", kwargs={"list_id": self.parent_list.id}))
+            return JsonResponse({'success': True, 'item_name': item.item_name})
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
+    
 
+ 
 
 # Views involved in doing stuff with a list
-
-# class ListFormView(generic.edit.FormView):
-#     template_name = "todo/create_list.html"
-#     form_class = ListForm
-#     success_url = '/'
-
-#     def form_valid(self, form):
-#         form.create_list(self.request.user)
-#         return super().form_valid(form)
-
 
 class ListCreateView(CreateView):
     template_name = "todo/create_list.html"
@@ -111,3 +107,25 @@ class ItemCreateView(CreateView):
     
     def get_success_url(self):
         return reverse_lazy('list_view', kwargs={'parent_list': self.object.parent_list})
+    
+class ItemUpdateView(View):
+    @method_decorator(csrf_exempt)
+    def post(self, request, item_id):
+        try:
+            item = get_object_or_404(Item, id=item_id)
+            data = json.loads(request.body)
+            item.item_name = data.get('item_name', item.item_name)
+            item.save()
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+        
+class ItemDeleteView(DeleteView):
+    @method_decorator(csrf_exempt)
+    def post(self, request, item_id):
+        try:
+            item = get_object_or_404(Item, id=item_id)
+            item.delete()
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
