@@ -3,12 +3,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic, View
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic.edit import CreateView, DeleteView, UpdateView, ModelFormMixin
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from .forms import ListForm, ItemForm, ItemFormSet
 from .models import List, Item
 import json
