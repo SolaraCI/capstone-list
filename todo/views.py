@@ -47,10 +47,12 @@ class SingleListView(generic.ListView):
             item = form.save(commit=False)
             item.parent_list = self.parent_list
             item.save()
-        return HttpResponseRedirect(reverse_lazy("list_view", kwargs={"list_id": self.parent_list.id}))
+            return JsonResponse({'success': True, 'item_name': item.item_name})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
     
 
-
+ 
 
 # Views involved in doing stuff with a list
 

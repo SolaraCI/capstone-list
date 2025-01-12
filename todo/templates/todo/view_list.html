@@ -28,30 +28,28 @@
     </div>
   </div>
   {% endfor %}
-      <div id="new-item-input">
-        <!-- Creating New Items -->
-        <div class="col-md-4 card mb-4 mt-3">
-          <div class="card-body">
-            {% if user.is_authenticated %}
-            <h3>Add an item</h3>
-            <form id="itemForm" method="post" style="margin-top: 1.3em">
-              {{ item_form | crispy }} {% csrf_token %}
-              <button
-                id="submitButton"
-                type="submit"
-                class="btn btn-signup btn-lg"
-              >
-                Submit
-              </button>
-            </form>
-            {% endif %}
-          </div>
-        </div>
-        <!-- <div class="row" ><button type="button" id="create-item-button">Add Item</button></div> -->
-      </div>
+  </div>
+<div id="new-item-input">
+  <!-- Creating New Items -->
+  <div class="col-md-4 card mb-4 mt-3">
+    <div class="card-body">
+      {% if user.is_authenticated %}
+      <h3>Add an item</h3>
+      <form id="itemForm" data-list-id="{{ parent_list.id }}" method="post" style="margin-top: 1.3em">
+        {{ item_form | crispy }} {% csrf_token %}
+        <button
+          id="submitButton"
+          type="submit"
+          class="btn btn-signup btn-lg"
+        >
+          Submit
+        </button>
+      </form>
+      {% endif %}
     </div>
   </div>
+  <!-- <div class="row" ><button type="button" id="create-item-button">Add Item</button></div> -->
 </div>
-
+ 
 <!-- index.html content ends here -->
 {% endblock %}
