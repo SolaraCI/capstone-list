@@ -49,30 +49,10 @@ class SingleListView(generic.ListView):
             item.save()
         return HttpResponseRedirect(reverse_lazy("list_view", kwargs={"list_id": self.parent_list.id}))
     
-class ItemUpdateView(View):
-    @method_decorator(csrf_exempt)
-    def post(self, request, item_id):
-        try:
-            item = get_object_or_404(Item, id=item_id)
-            data = json.loads(request.body)
-            item.item_name = data.get('item_name', item.item_name)
-            item.save()
-            return JsonResponse({'success': True})
-        except Exception as e:
-            return JsonResponse({'success': False, 'error': str(e)})
+
 
 
 # Views involved in doing stuff with a list
-
-# class ListFormView(generic.edit.FormView):
-#     template_name = "todo/create_list.html"
-#     form_class = ListForm
-#     success_url = '/'
-
-#     def form_valid(self, form):
-#         form.create_list(self.request.user)
-#         return super().form_valid(form)
-
 
 class ListCreateView(CreateView):
     template_name = "todo/create_list.html"
@@ -125,3 +105,25 @@ class ItemCreateView(CreateView):
     
     def get_success_url(self):
         return reverse_lazy('list_view', kwargs={'parent_list': self.object.parent_list})
+    
+class ItemUpdateView(View):
+    @method_decorator(csrf_exempt)
+    def post(self, request, item_id):
+        try:
+            item = get_object_or_404(Item, id=item_id)
+            data = json.loads(request.body)
+            item.item_name = data.get('item_name', item.item_name)
+            item.save()
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+        
+class ItemDeleteView(DeleteView):
+    @method_decorator(csrf_exempt)
+    def post(self, request, item_id):
+        try:
+            item = get_object_or_404(Item, id=item_id)
+            item.delete()
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})

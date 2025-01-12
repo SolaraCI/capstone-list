@@ -8,4 +8,5 @@ urlpatterns = [
     path('lists/<int:list_id>/update/', views.ListUpdateView.as_view(), name='list_update'),
     path('lists/<int:list_id>/delete/', views.ListDeleteView.as_view(), name='list_delete'),
     path('items/edit/<int:item_id>/', views.ItemUpdateView.as_view(), name='edit_item'),
+    path('items/delete/<int:item_id>/', views.ItemDeleteView.as_view(), name='delete_item'),
 ]
