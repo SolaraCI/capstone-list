@@ -47,7 +47,7 @@ class SingleListView(generic.ListView):
             item = form.save(commit=False)
             item.parent_list = self.parent_list
             item.save()
-            return JsonResponse({'success': True, 'item_name': item.item_name})
+            return JsonResponse({'success': True, 'item_name': item.item_name, 'item_id': item.pk})
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
     
@@ -126,6 +126,18 @@ class ItemDeleteView(DeleteView):
         try:
             item = get_object_or_404(Item, id=item_id)
             item.delete()
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+        
+class ItemStatusView(View):
+    @method_decorator(csrf_exempt)
+    def post(self, request, item_id):
+        try:
+            item = get_object_or_404(Item, id=item_id)
+            data = json.loads(request.body)
+            item.status = data.get('status', item.status)
+            item.save()
             return JsonResponse({'success': True})
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
