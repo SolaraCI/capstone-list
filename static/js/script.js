@@ -31,9 +31,23 @@ document.addEventListener("DOMContentLoaded", function () {
                     <h3 class="card-title item-name">${data.item_name}</h3>
                     </div>
                     <div class="col-md-3">
-                    <button type="button" class="btn btn-secondary mt-2" id="status_0_item_${data.item_id}">Not Started</button>
-                    <button type="button" class="btn btn-secondary mt-2" id="status_1_item_${data.item_id}">In Progress</button>
-                    <button type="button" class="btn btn-secondary mt-2" id="status_2_item_${data.item_id}">Complete</button>
+                    {% if item.status === 0 %}
+                        <button type="button" class="btn btn-success mt-2" id="status_0_item_{{ item.pk }}">Not Started</button>
+                    {% else %} 
+                        <button type="button" class="btn btn-secondary mt-2" id="status_0_item_{{ item.pk }}">Not Started</button>
+                    {% endif %}
+                    <!-- Highlights 'In Progress' button if status is 1 -->
+                    {% if item.status === 1 %}
+                        <button type="button" class="btn btn-success mt-2" id="status_1_item_{{ item.pk }}">In Progress</button>
+                    {% else %}
+                        <button type="button" class="btn btn-secondary mt-2" id="status_1_item_{{ item.pk }}">In Progress</button>
+                    {% endif %}
+                    <!-- Highlights 'Complete' button if status is 2 -->
+                    {% if item.status === 2 %}
+                        <button type="button" class="btn btn-success mt-2" id="status_2_item_{{ item.pk }}">Complete</button>
+                    {% else %}
+                        <button type="button" class="btn btn-secondary mt-2" id="status_2_item_{{ item.pk }}">Complete</button>
+                    {% endif %}
                     </div>
                     <div class="col-md-3">
                     <form class="edit_delete_form" method="" action="">
@@ -239,25 +253,39 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         // Make an AJAX request to update the item
-        fetch(`/items/status0/${itemId}/`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": getCookie("csrftoken"),
-        },
-        body: JSON.stringify(data),
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.success) {
-            button.classList.add("btn-success");
-            linkedStatus1Button.classList.remove("btn-success");
-            linkedStatus2Button.classList.remove("btn-success");
-            } else {
-            alert("Error updating item");
-            }
-        });
+        if (button.classList.contains("btn-success")) {
+            return;
+        }
+        else {
+            fetch(`/items/status0/${itemId}/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken"),
+            },
+            body: JSON.stringify(data),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                button.classList.add("btn-success");
+                // If status 0 button is clicked, remove success class from previous status
+                if (linkedStatus1Button.classList.contains("btn-success")) {
+                    linkedStatus1Button.classList.remove("btn-success");
+                    linkedStatus1Button.classList.add("btn-secondary");
+                }
+                else if (linkedStatus2Button.classList.contains("btn-success")) {
+                        linkedStatus2Button.classList.remove("btn-success");
+                        linkedStatus2Button.classList.add("btn-secondary");
+                }
+                else {
+                    alert("Error updating item");
+                }
+                }
+            });
+        }
     }
+
 
     function setStatus1(event) {
         var button = event.target;
@@ -274,24 +302,37 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         // Make an AJAX request to update the item
-        fetch(`/items/status1/${itemId}/`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": getCookie("csrftoken"),
-        },
-        body: JSON.stringify(data),
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.success) {
-            button.classList.add("btn-success");
-            linkedStatus0Button.classList.remove("btn-success");
-            linkedStatus2Button.classList.remove("btn-success");
-            } else {
-            alert("Error updating item");
-            }
-        });
+        if (button.classList.contains("btn-success")) {
+            return;
+        }
+        else {
+            fetch(`/items/status1/${itemId}/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken"),
+            },
+            body: JSON.stringify(data),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                button.classList.add("btn-success");
+                // If status 1 button is clicked, remove success class from previous status
+                if (linkedStatus0Button.classList.contains("btn-success")) {
+                    linkedStatus0Button.classList.remove("btn-success");
+                    linkedStatus0Button.classList.add("btn-secondary");
+                }
+                else if (linkedStatus2Button.classList.contains("btn-success")) {
+                        linkedStatus2Button.classList.remove("btn-success");
+                        linkedStatus2Button.classList.add("btn-secondary");
+                }
+                else {
+                    alert("Error updating item");
+                }
+                }
+            });
+        }
     }
 
     function setStatus2(event) {
@@ -309,24 +350,37 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         // Make an AJAX request to update the item
-        fetch(`/items/status2/${itemId}/`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": getCookie("csrftoken"),
-        },
-        body: JSON.stringify(data),
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.success) {
-            button.classList.add("btn-success");
-            linkedStatus0Button.classList.remove("btn-success");
-            linkedStatus1Button.classList.remove("btn-success");
-            } else {
-            alert("Error updating item");
-            }
-        });
+        if (button.classList.contains("btn-success")) {
+            return;
+        }
+        else {
+            fetch(`/items/status2/${itemId}/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken"),
+            },
+            body: JSON.stringify(data),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                button.classList.add("btn-success");
+                // If status 2 button is clicked, remove success class from previous status
+                if (linkedStatus0Button.classList.contains("btn-success")) {
+                    linkedStatus0Button.classList.remove("btn-success");
+                    linkedStatus0Button.classList.add("btn-secondary");
+                }
+                else if (linkedStatus1Button.classList.contains("btn-success")) {
+                        linkedStatus1Button.classList.remove("btn-success");
+                        linkedStatus1Button.classList.add("btn-secondary");
+                }
+                else {
+                    alert("Error updating item");
+                }
+                }
+            });
+        };
     }
   //                                                                                                                           \\
   // ------------------------------------------------------------------------------------------------------------------------- \\
