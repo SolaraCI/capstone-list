@@ -158,7 +158,7 @@ function editItem(event) {
 // ========================================================================================================================= \\
 // ========================================================================================================================= \\
 //                                                                                                                           \\
-// Select all status buttons for each status
+    // Select all status buttons for each status
     var status0Buttons = document.querySelectorAll("[id^='status_0_item_']");
     var status1Buttons = document.querySelectorAll("[id^='status_1_item_']");
     var status2Buttons = document.querySelectorAll("[id^='status_2_item_']");
@@ -270,6 +270,52 @@ function editItem(event) {
 //                                                                                                                           \\
 // ------------------------------------------------------------------------------------------------------------------------- \\
 //                                                 /change an item's status                                                  \\
+// ========================================================================================================================= \\
+// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| \\
+
+
+
+
+
+// ========================================================================================================================= \\
+// ========================================================================================================================= \\
+//                                                     Delete an item                                                        \\
+// ========================================================================================================================= \\
+// ========================================================================================================================= \\
+//                                                                                                                           \\
+    // Add event listeners to the delete buttons
+    var deleteButtons = document.querySelectorAll("[id^='delete_item_']");
+    deleteButtons.forEach(function (button) {
+      button.addEventListener("click", deleteItem);
+    });
+  
+    // Define the deleteItem function
+    function deleteItem(event) {
+      var button = event.target;
+      var itemId = button.id.split("_")[2];
+      
+      // Make an AJAX request to delete the item
+      fetch(`/items/delete/${itemId}/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCookie("csrftoken"),
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            // Remove the item from the DOM
+            var itemRow = button.closest(".row");
+            itemRow.remove();
+          } else {
+            alert("Error deleting item");
+          }
+        });
+    }
+//                                                                                                                           \\
+// ------------------------------------------------------------------------------------------------------------------------- \\
+//                                                    /delete an item                                                        \\
 // ========================================================================================================================= \\
 // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| \\
 
