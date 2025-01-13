@@ -16,9 +16,9 @@
       <h3 class="card-title item-name">{{ item.item_name }} </h3>
     </div>
     <div class="col-md-3">
-      <button type="button">Not Started</button>
-      <button type="button">In Progress</button>
-      <button type="button">Complete</button>
+      <button type="button" class="btn mt-2" id="status_0_item_{{ item.pk }}">Not Started</button>
+      <button type="button" class="btn mt-2" id="status_1_item_{{ item.pk }}">In Progress</button>
+      <button type="button" class="btn mt-2" id="status_2_item_{{ item.pk }}">Complete</button>
     </div>
     <div class="col-md-3">
       <form class="edit_delete_form" method="" action="">
