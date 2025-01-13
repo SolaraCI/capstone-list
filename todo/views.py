@@ -47,7 +47,7 @@ class SingleListView(generic.ListView):
             item = form.save(commit=False)
             item.parent_list = self.parent_list
             item.save()
-            return JsonResponse({'success': True, 'item_name': item.item_name, 'item_id': item.pk})
+            return JsonResponse({'success': True, 'item_name': item.item_name, 'item_id': item.pk, 'item_status': item.status})
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
     

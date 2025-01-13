@@ -26,36 +26,28 @@ document.addEventListener("DOMContentLoaded", function () {
             if (data.success) {
             var newItem = document.createElement("div");
             newItem.classList.add("row");
-            newItem.innerHTML = `
-                    <div class="col-md-6">
-                    <h3 class="card-title item-name">${data.item_name}</h3>
-                    </div>
-                    <div class="col-md-3">
-                    {% if item.status === 0 %}
-                        <button type="button" class="btn btn-success mt-2" id="status_0_item_{{ item.pk }}">Not Started</button>
-                    {% else %} 
-                        <button type="button" class="btn btn-secondary mt-2" id="status_0_item_{{ item.pk }}">Not Started</button>
-                    {% endif %}
-                    <!-- Highlights 'In Progress' button if status is 1 -->
-                    {% if item.status === 1 %}
-                        <button type="button" class="btn btn-success mt-2" id="status_1_item_{{ item.pk }}">In Progress</button>
-                    {% else %}
-                        <button type="button" class="btn btn-secondary mt-2" id="status_1_item_{{ item.pk }}">In Progress</button>
-                    {% endif %}
-                    <!-- Highlights 'Complete' button if status is 2 -->
-                    {% if item.status === 2 %}
-                        <button type="button" class="btn btn-success mt-2" id="status_2_item_{{ item.pk }}">Complete</button>
-                    {% else %}
-                        <button type="button" class="btn btn-secondary mt-2" id="status_2_item_{{ item.pk }}">Complete</button>
-                    {% endif %}
-                    </div>
-                    <div class="col-md-3">
-                    <form class="edit_delete_form" method="" action="">
-                        <button type="button" class="btn btn-info mt-2" id="edit_item_${data.item_id}">Edit</button>
-                        <button type="button" class="btn btn-danger mt-2" id="delete_item_${data.item_id}">Delete</button>
-                    </form>
-                    </div>
-                `;
+
+            // Determine the button classes based on the item status
+          var status0Class = data.item_status == 0 ? "btn-success" : "btn-secondary";
+          var status1Class = data.item_status == 1 ? "btn-success" : "btn-secondary";
+          var status2Class = data.item_status == 2 ? "btn-success" : "btn-secondary";
+
+          newItem.innerHTML = `
+            <div class="col-md-6">
+              <h3 class="card-title item-name">${data.item_name}</h3>
+            </div>
+            <div class="col-md-4">
+              <button type="button" class="btn ${status0Class}" id="status_0_item_${data.item_id}">Not Started</button>
+              <button type="button" class="btn ${status1Class}" id="status_1_item_${data.item_id}">In Progress</button>
+              <button type="button" class="btn ${status2Class}" id="status_2_item_${data.item_id}">Complete</button>
+            </div>
+            <div class="col-md-2">
+              <form class="edit_delete_form" method="" action="">
+                <button type="button" class="btn btn-info" id="edit_item_${data.item_id}">Edit</button>
+                <button type="button" class="btn btn-danger" id="delete_item_${data.item_id}">Delete</button>
+              </form>
+            </div>
+          `;
             itemContainer.appendChild(newItem);
             addEditListeners();
             addStatusListeners();

@@ -7,23 +7,38 @@
 <div class="container" id="item-container">
   <div class="row">
     <div class="col-md-6"><h2 class="card-title">Item Name</h2></div>
-    <div class="col-md-3"><h2 class="card-title">Status</h2></div>
-    <div class="col-md-3"><h2 class="card-title">Edit/Delete</h2></div>
+    <div class="col-md-4"><h2 class="card-title">Status</h2></div>
+    <div class="col-md-2"><h2 class="card-title">Edit/Delete</h2></div>
   </div>
   {% for item in item_list %}
   <div class="row">
     <div class="col-md-6">
       <h3 class="card-title item-name">{{ item.item_name }} </h3>
     </div>
-    <div class="col-md-3">
-      <button type="button" class="btn btn-secondary mt-2" id="status_0_item_{{ item.pk }}">Not Started</button>
-      <button type="button" class="btn btn-secondary mt-2" id="status_1_item_{{ item.pk }}">In Progress</button>
-      <button type="button" class="btn btn-secondary mt-2" id="status_2_item_{{ item.pk }}">Complete</button>
+    <div class="col-md-4">
+      <!-- Highlights 'Not Started' button if status is 0 -->
+      {% if item.status == 0 %}
+        <button type="button" class="btn btn-success" id="status_0_item_{{ item.pk }}">Not Started</button>
+      {% else %} 
+        <button type="button" class="btn btn-secondary" id="status_0_item_{{ item.pk }}">Not Started</button>
+      {% endif %}
+      <!-- Highlights 'In Progress' button if status is 1 -->
+      {% if item.status == 1 %}
+        <button type="button" class="btn btn-success" id="status_1_item_{{ item.pk }}">In Progress</button>
+      {% else %}
+        <button type="button" class="btn btn-secondary" id="status_1_item_{{ item.pk }}">In Progress</button>
+      {% endif %}
+      <!-- Highlights 'Complete' button if status is 2 -->
+      {% if item.status == 2 %}
+        <button type="button" class="btn btn-success" id="status_2_item_{{ item.pk }}">Complete</button>
+      {% else %}
+        <button type="button" class="btn btn-secondary" id="status_2_item_{{ item.pk }}">Complete</button>
+      {% endif %}
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
       <form class="edit_delete_form" method="" action="">
-        <button type="button" class="btn btn-info mt-2" id="edit_item_{{ item.pk }}">Edit</button>
-        <button type="button" class="btn btn-danger mt-2" id="delete_item_{{ item.pk }}">Delete</button>
+        <button type="button" class="btn btn-info" id="edit_item_{{ item.pk }}">Edit</button>
+        <button type="button" class="btn btn-danger" id="delete_item_{{ item.pk }}">Delete</button>
       </form>
     </div>
   </div>
