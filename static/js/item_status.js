@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Add event listeners to the status buttons
+  // Select all status buttons for each status
   var status0Buttons = document.querySelectorAll("[id^='status_0_item_']");
   var status1Buttons = document.querySelectorAll("[id^='status_1_item_']");
   var status2Buttons = document.querySelectorAll("[id^='status_2_item_']");
@@ -19,8 +19,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function setStatus0(event) {
     var button = event.target;
     var itemId = button.id.split("_")[3];
-    var linkedStatus1Button = document.querySelectorAll("[id='status_1_item_${itemId}']");
-    var linkedStatus2Button = document.querySelectorAll("[id='status_2_item_${itemId}']");
+    var linkedStatus1Button = document.querySelector("#status_1_item_" + itemId);
+    var linkedStatus2Button = document.querySelector("#status_2_item_" + itemId);
     var newItemStatus = 0;
     var data = {
       status: newItemStatus,
@@ -50,8 +50,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function setStatus1(event) {
     var button = event.target;
     var itemId = button.id.split("_")[3];
-    var linkedStatus0Button = status0Buttons.find("[id='status_0_item_${itemId}']");
-    var linkedStatus2Button = status2Buttons.find("[id='status_2_item_${itemId}']");
+    var linkedStatus0Button = document.querySelector("#status_0_item_" + itemId);
+    var linkedStatus2Button = document.querySelector("#status_2_item_" + itemId);
     var newItemStatus = 1;
     var data = {
       status: newItemStatus,
@@ -81,8 +81,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function setStatus2(event) {
     var button = event.target;
     var itemId = button.id.split("_")[3];
-    var linkedStatus0Button = status0Buttons.find("[id='status_0_item_${itemId}']");
-    var linkedStatus1Button = status1Buttons.find("[id='status_1_item_${itemId}']");
+    var linkedStatus0Button = document.querySelector("#status_0_item_" + itemId);
+    var linkedStatus1Button = document.querySelector("#status_1_item_" + itemId);
     var newItemStatus = 2;
     var data = {
       status: newItemStatus,
