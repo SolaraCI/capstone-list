@@ -1,39 +1,39 @@
+{% load static %} {% url 'home' as home_url %}
+
 <!DOCTYPE html>
 <html class="h-100" lang="en">
   <head>
-    <meta charset="utf-8" >
     <title>todo:[list]</title>
-    <link
-      rel="shortcut icon"
-      type="image/png"
-      href="/workspace/capstone-list/static/images/favicon.png" >
-    <meta name="viewport" content="width=device-width, initial-scale=1" >
+    <link rel="shortcut icon" type="img/png" href="{% static 'images/favicon.png' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Google Fonts CSS -->
-    <link rel="preconnect noopener" href="https://fonts.gstatic.com" >
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap"
-      rel="stylesheet" >
+      rel="stylesheet"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=Lato:wght@300;700&display=swap"
-      rel="stylesheet" >
+      rel="stylesheet"
+    />
 
     <!-- Font Awesome CSS -->
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" >
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
 
     <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
-      crossorigin="anonymous" >
+      crossorigin="anonymous"
+    />
 
     <!-- Custom CSS -->
-    <link
-      rel="stylesheet"
-      href="/workspace/capstone-list/static/css/style.css" >
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   </head>
 
   <body class="d-flex flex-column h-100 main-bg">
@@ -53,7 +53,8 @@
           data-bs-target="#navbarText"
           aria-controls="navbarText"
           aria-expanded="false"
-          aria-label="Toggle navigation">
+          aria-label="Toggle navigation"
+        >
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
@@ -71,7 +72,7 @@
                 class="nav-link"
                 aria-current="page"
                 href="{% url 'list_create' %}"
-                >Create List</a>
+                >Create List</a
               >
             </li>
             {% if user.is_authenticated %}
@@ -119,30 +120,18 @@
     <footer class="footer mt-auto py-3 dark-bg">
       <p class="m-0 text-center text-white">© Sol Coton</p>
       <p class="m-0 text-center text-white">
-        We don't have a presence on these platforms:
-        <i
-          class="fab fa-facebook-square ms-3"
-          aria-hidden="true"
-          alt="Facebook"></i>
-        <i
-          class="fab fa-twitter-square ms-3"
-          aria-hidden="true"
-          alt="Twitter"></i>
-        <i
-          class="fab fa-instagram-square ms-3"
-          aria-hidden="true"
-          alt="Instagram"></i>
-        <i
-          class="fab fa-youtube-square ms-3"
-          aria-hidden="true"
-          alt="Youtube"></i>
+        Follow us: <i class="fab fa-facebook-square ms-3"></i>
+        <i class="fab fa-twitter-square ms-3"></i>
+        <i class="fab fa-instagram-square ms-3"></i>
+        <i class="fab fa-youtube-square ms-3"></i>
       </p>
     </footer>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-      crossorigin="anonymous"></script>
+      crossorigin="anonymous"
+    ></script>
     <script src="{% static 'js/script.js' %}"></script>
   </body>
 </html>
