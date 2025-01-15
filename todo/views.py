@@ -27,7 +27,7 @@ class Overview(generic.ListView):
 
 
 class SingleListView(generic.ListView):
-    template_name = "/workspace/capstone-list/todo/templates/todo/view_list.html"
+    template_name = "todo/view_list.html"
 
     def get_queryset(self):
         self.parent_list = get_object_or_404(List, id=self.kwargs.get("list_id"))
